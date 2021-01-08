@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body {
+            margin-top: 1%;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+
+        blockquote {
+            border-color: red;
+        }
+
+        #chat blockquote:nth-child(even) {
+            border-color: green;
+        }
+
+        .glyphicon-asterisk {
+            color: green;
+            font-size: 10px;
+            left: 3px;
+            top: -5px;
+        }
+
+        .glyphicon-remove {
+            left: 50px;
+            top: 1px;
+            font-size: 14px;
+            color: red;
+        }
+
+        #chatService {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row">
+        <blockquote>
+            My Profile
+        </blockquote>
+        <blockquote>
+                Id:    <%=  user[0]._id %>
+               </blockquote>
+        <blockquote>
+         Name:    <%=  user[0].name %>
+        </blockquote>
+
+        <blockquote>
+          Active:    <%=  user[0].isActive %>
+        </blockquote>
+
+        <blockquote>
+                <a align="right"  href="/"+ style="position: relative;top: 2px;color: black;">Go To Chat</a>
+        </blockquote>
+
+        
+    </div>
+</body>
+
+</html>

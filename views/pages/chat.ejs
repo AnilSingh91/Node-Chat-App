@@ -1,0 +1,157 @@
+<html>
+
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body {
+            margin-top: 1%;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+
+        blockquote {
+            border-color: red;
+        }
+
+        #chat blockquote:nth-child(even) {
+            border-color: green;
+        }
+
+        .glyphicon-asterisk {
+            color: green;
+            font-size: 10px;
+            left: 3px;
+            top: -5px;
+        }
+
+        .glyphicon-remove {
+            left: 50px;
+            top: 1px;
+            font-size: 14px;
+            color: red;
+        }
+
+        #chatService {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row">
+        <blockquote>
+            Node Chat Service with MongoDB
+        </blockquote>
+    </div>
+    <div id="newUser" class="row">
+        <hr>
+        <blockquote>
+            Login / Sign Up
+        </blockquote>
+        <form id="newUser">
+            <blockquote>
+                <label for="">Name:</label>
+                <input type="text" name="username" id="user">
+                <br>
+                <br>
+                <input class="btn btn-primary" type="submit" value="Enter Chat">
+            </blockquote>
+        </form>
+    </div>
+    <hr>
+    <div id="chatService" class="row">
+
+        <div class="col-md-6">
+            <blockquote>
+                Chat Members
+                <a align="right" id="goToProfile" href="javascript:void(0)"+ style="float: right;position: relative;top: 2px;color: black;">Profile</a>
+            </blockquote>
+            <hr>
+            <div id="users">
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <blockquote>
+                <label for="">Messages</label>
+            </blockquote>
+            <hr>
+            <div id="chat">
+            </div>
+            <form id="msgForm">
+                <br>
+                <blockquote>
+                    <input id="msg" name="message" style="height:30px;width:100%;padding:5px;" type="text" placeholder="Type Message">
+                    <br>
+                    <br>
+                    <input class="btn btn-primary" type="submit" value="Send Message !">
+                </blockquote>
+            </form>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            var socket = io();
+            $("#msgForm").submit(function (e) {
+                e.preventDefault();
+                socket.emit('send message', $('#msg').val(), $("#user").val())
+                $('#msg').val("");
+            });
+
+            socket.on('output', function (data) {
+                $('#chat').html('');
+                for (var i = 0; i < data.length; i++) {
+                    $('#chat').append("<blockquote>" + data[i].name + " : " + data[i].message + "</blockquote>");
+                }
+            });
+
+
+            socket.on('new message', function (data) {
+                $('#chat').append("<blockquote>" + data.username + " : " + data.msg + "</blockquote>");
+            });
+
+            $("#goToProfile").on('click',function(){
+               location.replace('/account/'+$("#user").val());
+            });
+
+
+            $("#newUser").submit(function (e) {
+                e.preventDefault();
+                socket.emit('new user', $("#user").val());
+                $("#chatService").show();
+                $("#newUser").hide();
+            });
+
+            socket.on('get users', function (data) {
+                $('#users').html('');
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].isActive) {
+                        $('#users').append("<blockquote>" + data[i].name + "<span class='glyphicon glyphicon-asterisk' aria-hidden='true'></span></blockquote>");
+                    } else {
+                        $('#users').append("<blockquote>" + data[i].name + "</blockquote>");
+                    }
+
+                }
+            })
+        });
+    </script>
+
+
+</body>
+
+</html>
