@@ -21,7 +21,7 @@ users = [];
 connections = [];
 
 server.listen(process.env.PORT || 3000);
-console.log("Server Running !");
+console.log("Server Running !, App live on http://localhost:3000 !");
 
 app.get('/', function (req, res) {
     res.render('pages/chat');
