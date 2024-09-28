@@ -121,3 +121,11 @@ app.delete("/delete-book", jsonParser, async (req, res) => {
 app.listen(PORT, () => {
   `Server started at ${PORT}`;
 });
+
+CREATE TABLE IF NOT EXISTS public.book
+(
+    book_name character varying(255) COLLATE pg_catalog."default",
+    book_rating smallint,
+    book_pages smallint,
+    book_id integer NOT NULL DEFAULT nextval('book_book_id_seq'::regclass)
+)
